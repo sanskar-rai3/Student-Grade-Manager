@@ -1,0 +1,3 @@
+/home/emxfire/C++/student-grade-manager/build/CMakeFiles/Student_Grade_Manager.dir
+/home/emxfire/C++/student-grade-manager/build/CMakeFiles/edit_cache.dir
+/home/emxfire/C++/student-grade-manager/build/CMakeFiles/rebuild_cache.dir
