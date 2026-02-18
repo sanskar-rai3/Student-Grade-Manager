@@ -16,7 +16,11 @@ public:
     float getGPA() const;
 };
 
-float averageGPA(const std::vector<Student> &datas;
+float averageGPA(const std::vector<Student> &datas);
 
 void loadData(std::vector<Student> &datas, std::ifstream &inFile);
-void storeData(std::vector<Student> &datas, std::ofstream &outFile);
+void storeData(const std::vector<Student> &datas, std::ofstream &outFile);
+
+void listAllStudent(const std::vector<Student> &datas);
+void addStudent(std::vector<Student> &datas, std::string name, float gpa);
+void removeStudent(std::vector<Student> &datas, std::string name);

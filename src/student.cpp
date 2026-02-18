@@ -30,6 +30,8 @@ float averageGPA(const std::vector<Student> &datas) {
 }
 
 void loadData(std::vector<Student> &datas, std::ifstream &inFile) {
+    datas.clear();
+
     std::string line;
     std::getline(inFile, line);
 
@@ -48,5 +50,13 @@ void storeData(const std::vector<Student> &datas, std::ofstream &outFile) {
     
     for (const Student &data : datas) {
         outFile << data.getName() << ',' << data.getGPA() << '\n';
+    }
+}
+
+void listAllStudent(const std::vector<Student> &datas) {
+    std::cout << "Name,GPA" << '\n';
+
+    for (const Student &data : datas) {
+        std::cout << data.getName() << ',' << data.getGPA() << '\n';
     }
 }
