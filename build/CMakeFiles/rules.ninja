@@ -44,7 +44,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/home/emxfire/C++/student-grade-manager -B/home/emxfire/C++/student-grade-manager/build
+  command = /usr/bin/cmake --regenerate-during-build -S/home/emxfire/C++/Student_Grade_Manager -B/home/emxfire/C++/Student_Grade_Manager/build
   description = Re-running CMake...
   generator = 1
 

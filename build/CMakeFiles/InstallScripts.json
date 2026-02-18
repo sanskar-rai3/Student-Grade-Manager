@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"/home/emxfire/C++/student-grade-manager/build/cmake_install.cmake"
+		"/home/emxfire/C++/Student_Grade_Manager/build/cmake_install.cmake"
 	],
 	"Parallel" : false
 }
