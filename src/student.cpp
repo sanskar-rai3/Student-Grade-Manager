@@ -54,9 +54,18 @@ void storeData(const std::vector<Student> &datas, std::ofstream &outFile) {
 }
 
 void listAllStudent(const std::vector<Student> &datas) {
+    if (datas.empty()) return;
     std::cout << "Name,GPA" << '\n';
 
     for (const Student &data : datas) {
         std::cout << data.getName() << ',' << data.getGPA() << '\n';
     }
+}
+
+void addStudent(std::vector<Student> &datas, std::string name, float gpa) {
+
+}
+
+void removeStudent(std::vector<Student> &datas, std::string name) {
+
 }
