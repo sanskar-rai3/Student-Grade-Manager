@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
 
     while (true) {
         clearScreen();
-
         std::cout << "===Student-Grade-Manager===\n"
                      "1. List All Students\n"
                      "2. Calculate Average GPA\n"
@@ -48,28 +47,85 @@ int main(int argc, char *argv[]) {
         }
 
         switch (menu_choice) {
-            case 1:
+            case 1: // List all students
                 if (students.empty()) {
                     clearScreen();
                     std::cout << "No Students Added!\n";
                     pauseScreen();
                 }
                 else {
+                    clearScreen();
                     listAllStudent(students);
+                    pauseScreen();
                 }
 
                 break;
-            case 2:
+
+            case 2: // Calculate average GPA
+                if (students.empty()) {
+                    clearScreen();
+                    std::cout << "No Students Added!\n";
+                    pauseScreen();
+                }
+                else {
+                    clearScreen();
+                    std::cout << "Total student: " << students.size() << '\n'
+                              << "Averge GPA: " << averageGPA(students) << '\n';
+                    pauseScreen();
+                }
+
                 break;
-            case 3:
+
+            case 3: // Search student
                 break;
-            case 4:
+
+            case 4: // Add student
                 break;
-            case 5:
+
+            case 5: // Remove student
                 break;
-            case 6:
+
+            case 6: // Load data
+            {
+                std::ifstream inFile("../data/data.csv");
+                if (!inFile.is_open()) {
+                    clearScreen();
+                    std::cerr << "Error opening the file\n";
+                    pauseScreen();
+                }
+                else {
+                    loadData(students, inFile);
+                    clearScreen();
+                    std::cout << "Data loaded successfully\n";
+                    pauseScreen();
+                }
+            }
+  
                 break;
-            case 7:
+
+            case 7: //Store data
+            {
+                if (students.empty()) {
+                    clearScreen();
+                    std::cout << "No Students Added!\n";
+                    pauseScreen();
+                }
+                else {
+                    std::ofstream outFile("../data/data.csv");
+                    if (!outFile.is_open()) {
+                        clearScreen();
+                        std::cerr << "Error opening the file\n";
+                        pauseScreen();
+                    }
+                    else {
+                        storeData(students, outFile);
+                        clearScreen();
+                        std::cout << "Data saved successfully\n";
+                        pauseScreen();
+                    }
+                }
+            }
+
                 break;
         }
     }
@@ -82,7 +138,7 @@ void clearScreen(void) {
 }
 
 void pauseScreen(void) {
-    std::cout << "\nPress enter to continue. . .\n";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "\nPress enter to continue. . .\n";
     std::cin.get();
 }
