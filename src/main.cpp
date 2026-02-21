@@ -52,30 +52,34 @@ int main(int argc, char *argv[]) {
 
         switch (menu_choice) {
             case 1: // List all students
-                if (students.empty()) {
-                    clearScreen();
-                    std::cout << "No Students Added!\n";
-                    pauseScreen_cin();
-                }
-                else {
-                    clearScreen();
-                    listAllStudent(students);
-                    pauseScreen_cin();
+                {
+                    if (students.empty()) {
+                        clearScreen();
+                        std::cout << "No Students Added!\n";
+                        pauseScreen_cin();
+                    }
+                    else {
+                        clearScreen();
+                        listAllStudent(students);
+                        pauseScreen_cin();
+                    }
                 }
 
                 break;
 
             case 2: // Calculate average GPA
-                if (students.empty()) {
-                    clearScreen();
-                    std::cout << "No Students Added!\n";
-                    pauseScreen_cin();
-                }
-                else {
-                    clearScreen();
-                    std::cout << "Total student: " << students.size() << '\n'
-                              << "Averge GPA: " << averageGPA(students) << '\n';
-                    pauseScreen_cin();
+                {
+                    if (students.empty()) {
+                        clearScreen();
+                        std::cout << "No Students Added!\n";
+                        pauseScreen_cin();
+                    }
+                    else {
+                        clearScreen();
+                        std::cout << "Total student: " << students.size() << '\n'
+                                << "Averge GPA: " << averageGPA(students) << '\n';
+                        pauseScreen_cin();
+                    }
                 }
 
                 break;
@@ -84,7 +88,7 @@ int main(int argc, char *argv[]) {
                 {
                     clearScreen();
                     std::string entered_name;
-                    std::cout << "Enter a name: ";
+                    std::cout << "Enter a name to search: ";
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
                     std::getline(std::cin, entered_name);
 
@@ -99,7 +103,7 @@ int main(int argc, char *argv[]) {
 
                     if (!found) {
                         clearScreen();
-                        std::cout << "No matching Students were found!\n";
+                        std::cout << "No matching students were found!\n";
                     }
 
                     pauseScreen_getline();
@@ -112,7 +116,7 @@ int main(int argc, char *argv[]) {
                     clearScreen();
                     std::string name;
                     float gpa;
-                    std::cout << "Enter full name: ";
+                    std::cout << "Enter full name to add: ";
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
                     std::getline(std::cin, name);
 
@@ -136,6 +140,39 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 5: // Remove student
+                {
+                    clearScreen();
+                    std::string entered_name;
+                    std::cout << "Enter full name to remove: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::getline(std::cin, entered_name);
+
+                    bool found = false;
+                    for (auto it = students.begin(); it != students.end(); ++it) {
+                        if (entered_name == it->getName()) {
+                            char choice;
+                            std::cout << entered_name << " found\n"
+                                      << "Do you want to delete \"" << it->getName() << "\"," << it->getGPA() << " ? [y/N]: ";
+                            std::cin >> choice;
+
+                            if (choice == 'y' || choice == 'Y') {
+                                clearScreen();
+                                students.erase(it);
+                                std::cout << "Deleted successfully!\n";
+                                pauseScreen_cin();
+                            }
+
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        clearScreen();
+                        std::cout << "No matching student found!\n";
+                        pauseScreen_getline();
+                    }
+                }
                 break;
 
             case 6: // Load data
@@ -202,6 +239,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+// Clear screen
 void clearScreen(void) {
     std::cout << "\033[2J\033[H" << std::flush;
 }
