@@ -4,12 +4,16 @@
 #include <vector>
 #include <fstream>
 #include <limits>
+#include <algorithm>
+#include <cctype>
 
 #define FILE_PATH "../data/data.csv"
 
 void clearScreen(void);
 void pauseScreen_cin(void);
 void pauseScreen_getline(void);
+std::string toLower(const std::string& str);
+bool isSubstring(const std::string& str, const std::string& sub);
 
 int main(int argc, char *argv[]) {
     std::vector<Student> students;
@@ -38,6 +42,7 @@ int main(int argc, char *argv[]) {
             std::cout << "Warning: Data will not be saved automatically, Save before exiting\n"
                          "Exit? [y/N]: ";
             std::cin >> choice;
+
             if (choice == 'y' || choice == 'Y') {
                 clearScreen();
                 std::cout << "Exited Successfully\n";
@@ -76,6 +81,30 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 3: // Search student
+                {
+                    clearScreen();
+                    std::string entered_name;
+                    std::cout << "Enter a name: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+                    std::getline(std::cin, entered_name);
+
+                    bool found = false;
+                    std::cout << "Name,GPA\n";
+                    for (const Student &student : students) {
+                        if (isSubstring(student.getName(), entered_name)) {
+                            std::cout << student.getName() << ',' << student.getGPA() << '\n'; 
+                            found = true;
+                        }
+                    }
+
+                    if (!found) {
+                        clearScreen();
+                        std::cout << "No matching Students were found!\n";
+                    }
+
+                    pauseScreen_getline();
+                }
+
                 break;
 
             case 4: // Add student
@@ -123,6 +152,7 @@ int main(int argc, char *argv[]) {
                         std::cout << "The current data will get overwritten\n"
                                      "Continue?[y/N]: ";
                         std::cin >> choice;
+
                         if (choice == 'y' || choice == 'Y') {
                             clearScreen();
                             loadData(students, inFile);
@@ -154,6 +184,7 @@ int main(int argc, char *argv[]) {
                             std::cout << "The current stored data will get cleared and overwritten\n"
                                          "Continue?[y/N]: ";
                             std::cin >> choice;
+
                             if (choice == 'y' || choice == 'Y') {
                                 clearScreen();
                                 storeData(students, outFile);
@@ -186,4 +217,17 @@ void pauseScreen_cin(void) {
 void pauseScreen_getline(void) {
     std::cout << "\nPress enter to continue. . .\n";
     std::cin.get();
+}
+
+// Converts an string to lowercase
+std::string toLower(const std::string& str) {
+    std::string result = str;
+    std::transform(result.begin(), result.end(), result.begin(),
+                   [](unsigned char c){ return std::tolower(c); });
+    return result;
+}
+
+// Checks if an string is a sub-string of another
+bool isSubstring(const std::string& str, const std::string& sub) {
+    return toLower(str).find(toLower(sub)) != std::string::npos;
 }
