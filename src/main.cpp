@@ -5,10 +5,11 @@
 #include <fstream>
 #include <limits>
 
-#define FILE_NAME "data.csv"
+#define FILE_PATH "../data/data.csv"
 
 void clearScreen(void);
-void pauseScreen(void);
+void pauseScreen_cin(void);
+void pauseScreen_getline(void);
 
 int main(int argc, char *argv[]) {
     std::vector<Student> students;
@@ -33,14 +34,12 @@ int main(int argc, char *argv[]) {
 
         if (menu_choice == 8) {
             clearScreen();
-
-            char yn;
-            std::cout << "Exit? [y/N]: ";
-            std::cin >> yn;
-
-            if (yn == 'y' || yn == 'Y') {
+            char choice;
+            std::cout << "Warning: Data will not be saved automatically, Save before exiting\n"
+                         "Exit? [y/N]: ";
+            std::cin >> choice;
+            if (choice == 'y' || choice == 'Y') {
                 clearScreen();
-
                 std::cout << "Exited Successfully\n";
                 exit(EXIT_SUCCESS);
             }
@@ -51,12 +50,12 @@ int main(int argc, char *argv[]) {
                 if (students.empty()) {
                     clearScreen();
                     std::cout << "No Students Added!\n";
-                    pauseScreen();
+                    pauseScreen_cin();
                 }
                 else {
                     clearScreen();
                     listAllStudent(students);
-                    pauseScreen();
+                    pauseScreen_cin();
                 }
 
                 break;
@@ -65,13 +64,13 @@ int main(int argc, char *argv[]) {
                 if (students.empty()) {
                     clearScreen();
                     std::cout << "No Students Added!\n";
-                    pauseScreen();
+                    pauseScreen_cin();
                 }
                 else {
                     clearScreen();
                     std::cout << "Total student: " << students.size() << '\n'
                               << "Averge GPA: " << averageGPA(students) << '\n';
-                    pauseScreen();
+                    pauseScreen_cin();
                 }
 
                 break;
@@ -80,51 +79,90 @@ int main(int argc, char *argv[]) {
                 break;
 
             case 4: // Add student
+                {
+                    clearScreen();
+                    std::string name;
+                    float gpa;
+                    std::cout << "Enter full name: ";
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+                    std::getline(std::cin, name);
+
+                    bool isNew = true;
+                    for (const Student &student : students) {
+                        if (name == student.getName()) {
+                            isNew = false;
+                        }
+                    }
+                    if (isNew) {
+                        std::cout << "Enter GPA: ";
+                        std::cin >> gpa;
+                        addStudent(students, name, gpa);
+                    }
+                    else {
+                        std::cout << "Student already exists!\n";
+                        pauseScreen_getline();
+                    }
+                }
+
                 break;
 
             case 5: // Remove student
                 break;
 
             case 6: // Load data
-            {
-                std::ifstream inFile("../data/data.csv");
-                if (!inFile.is_open()) {
-                    clearScreen();
-                    std::cerr << "Error opening the file\n";
-                    pauseScreen();
+                {
+                    std::ifstream inFile(FILE_PATH);
+                    if (!inFile.is_open()) {
+                        clearScreen();
+                        std::cerr << "Error opening the file\n";
+                        pauseScreen_cin();
+                    }
+                    else {
+                        clearScreen();
+                        char choice;
+                        std::cout << "The current data will get overwritten\n"
+                                     "Continue?[y/N]: ";
+                        std::cin >> choice;
+                        if (choice == 'y' || choice == 'Y') {
+                            clearScreen();
+                            loadData(students, inFile);
+                            std::cout << "Data loaded successfully\n";
+                            pauseScreen_cin();
+                        }
+                    }
                 }
-                else {
-                    loadData(students, inFile);
-                    clearScreen();
-                    std::cout << "Data loaded successfully\n";
-                    pauseScreen();
-                }
-            }
   
                 break;
 
             case 7: //Store data
-            {
-                if (students.empty()) {
-                    clearScreen();
-                    std::cout << "No Students Added!\n";
-                    pauseScreen();
-                }
-                else {
-                    std::ofstream outFile("../data/data.csv");
-                    if (!outFile.is_open()) {
+                {
+                    if (students.empty()) {
                         clearScreen();
-                        std::cerr << "Error opening the file\n";
-                        pauseScreen();
+                        std::cout << "No Students Added!\n";
+                        pauseScreen_cin();
                     }
                     else {
-                        storeData(students, outFile);
-                        clearScreen();
-                        std::cout << "Data saved successfully\n";
-                        pauseScreen();
+                        std::ofstream outFile(FILE_PATH);
+                        if (!outFile.is_open()) {
+                            clearScreen();
+                            std::cerr << "Error opening the file\n";
+                            pauseScreen_cin();
+                        }
+                        else {
+                            clearScreen();
+                            char choice;
+                            std::cout << "The current stored data will get cleared and overwritten\n"
+                                         "Continue?[y/N]: ";
+                            std::cin >> choice;
+                            if (choice == 'y' || choice == 'Y') {
+                                clearScreen();
+                                storeData(students, outFile);
+                                std::cout << "Data saved successfully\n";
+                                pauseScreen_cin();
+                            }
+                        }
                     }
                 }
-            }
 
                 break;
         }
@@ -137,8 +175,15 @@ void clearScreen(void) {
     std::cout << "\033[2J\033[H" << std::flush;
 }
 
-void pauseScreen(void) {
+// Pause Screen after std::cin
+void pauseScreen_cin(void) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "\nPress enter to continue. . .\n";
+    std::cin.get();
+}
+
+// Pause Screen after std::getline
+void pauseScreen_getline(void) {
     std::cout << "\nPress enter to continue. . .\n";
     std::cin.get();
 }

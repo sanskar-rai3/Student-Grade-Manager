@@ -31,7 +31,7 @@ float averageGPA(const std::vector<Student> &datas) {
 
 void loadData(std::vector<Student> &datas, std::ifstream &inFile) {
     datas.clear();
-
+    
     std::string line;
     std::getline(inFile, line);
 
@@ -63,7 +63,7 @@ void listAllStudent(const std::vector<Student> &datas) {
 }
 
 void addStudent(std::vector<Student> &datas, std::string name, float gpa) {
-
+    datas.emplace_back(name, gpa);
 }
 
 void removeStudent(std::vector<Student> &datas, std::string name) {
