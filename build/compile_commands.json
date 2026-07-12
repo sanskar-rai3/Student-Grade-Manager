@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/emxfire/C++/Student_Grade_Manager/build",
+  "command": "/usr/bin/g++ -I/home/emxfire/C++/Student_Grade_Manager/include -g -std=gnu++17 -o CMakeFiles/Student_Grade_Manager.dir/src/main.cpp.o -c /home/emxfire/C++/Student_Grade_Manager/src/main.cpp",
+  "file": "/home/emxfire/C++/Student_Grade_Manager/src/main.cpp",
+  "output": "/home/emxfire/C++/Student_Grade_Manager/build/CMakeFiles/Student_Grade_Manager.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/emxfire/C++/Student_Grade_Manager/build",
+  "command": "/usr/bin/g++ -I/home/emxfire/C++/Student_Grade_Manager/include -g -std=gnu++17 -o CMakeFiles/Student_Grade_Manager.dir/src/student.cpp.o -c /home/emxfire/C++/Student_Grade_Manager/src/student.cpp",
+  "file": "/home/emxfire/C++/Student_Grade_Manager/src/student.cpp",
+  "output": "/home/emxfire/C++/Student_Grade_Manager/build/CMakeFiles/Student_Grade_Manager.dir/src/student.cpp.o"
+}
+]
